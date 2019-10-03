@@ -10,6 +10,8 @@ public class Demo {
         mapTest();
 
         listTest();
+
+        nestedMapTest();
     }
 
     private static void stringTest() {
@@ -49,6 +51,26 @@ public class Demo {
         list2.add(true);
         list2.add(25D);
 
-        System.out.println("maps are equal: " + ObjectComparator.areEqual(list1, list2));
+        System.out.println("lists are equal: " + ObjectComparator.areEqual(list1, list2));
+    }
+
+    private static void nestedMapTest() {
+        HashMap<String, Object> nestedMap1 = new HashMap<>();
+        nestedMap1.put("nk1", "s1");
+        nestedMap1.put("nk2", 10);
+
+        Map nestedMap2 = new HashMap();
+        nestedMap2.put("nk1", "s1");
+        nestedMap2.put("nk2", 10L);
+
+        Map map1 = new LinkedHashMap();
+        map1.put("k1", nestedMap1);
+        map1.put("k2", false);
+
+        Map map2 = new LinkedHashMap();
+        map2.put("k2", new Boolean(false));
+        map2.put("k1", nestedMap2);
+
+        System.out.println("nested-maps are equal: " + ObjectComparator.areEqual(map1, map2));
     }
 }
