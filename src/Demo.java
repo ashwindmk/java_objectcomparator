@@ -3,6 +3,8 @@ import java.util.*;
 
 public class Demo {
     public static void main(String[] args) {
+        nullTest();
+
         stringTest();
 
         numberTest();
@@ -12,6 +14,12 @@ public class Demo {
         listTest();
 
         nestedMapTest();
+    }
+
+    private static void nullTest() {
+        Object o1 = null;
+        Object o2 = null;
+        System.out.println("nulls are equal: " + ObjectComparator.areEqual(o1, o2));
     }
 
     private static void stringTest() {
