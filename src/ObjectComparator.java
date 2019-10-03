@@ -126,7 +126,6 @@ public class ObjectComparator {
                 if (s1.endsWith(".")) {
                     s1 = s1 + "0";
                 }
-                System.out.println("s1: " + s1);
             }
 
             if (s2.contains(".")) {
@@ -134,12 +133,10 @@ public class ObjectComparator {
                 if (s2.endsWith(".")) {
                     s2 = s2 + "0";
                 }
-                System.out.println("s2: " + s2);
             }
 
             BigDecimal b1 = new BigDecimal(s1);
             BigDecimal b2 = new BigDecimal(s2);
-            System.out.println("b1: " + b1 + ", b2: " + b2);
             return b1.equals(b2);
         }
 
