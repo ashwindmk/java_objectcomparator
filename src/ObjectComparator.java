@@ -3,7 +3,7 @@ import java.util.*;
 
 public class ObjectComparator {
     public static boolean areEqual(Object obj1, Object obj2) {
-        if (obj1 == obj2) {
+        if (Objects.equals(obj1, obj2)) {
             return true;
         }
 
@@ -22,6 +22,10 @@ public class ObjectComparator {
                     Iterator keys1 = set1.iterator();
                     while (keys1.hasNext()) {
                         Object key = keys1.next();
+                        if (!map2.containsKey(key)) {
+                            return false;
+                        }
+
                         if (!areEqual(map1.get(key), map2.get(key))) {
                             return false;
                         }
@@ -43,65 +47,17 @@ public class ObjectComparator {
                 int size1 = list1.size();
                 int size2 = list2.size();
                 if (size1 == size2) {
-                    for (Object obj : list1) {
-                        if (!list2.contains(obj)) {
-                            if (obj instanceof Number) {
-                                List numsInList2 = getNums(list2);
-
-                                if (numsInList2.isEmpty()) {
-                                    return false;
-                                }
-
-                                boolean contains = false;
-                                for (Object num : numsInList2) {
-                                    if (areEqual(num, obj)) {
-                                        contains = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!contains) {
-                                    return false;
-                                }
-                            } else if (obj instanceof List) {
-                                List listsInList2 = getLists(list2);
-
-                                if (listsInList2.isEmpty()) {
-                                    return false;
-                                }
-
-                                boolean contains = false;
-                                for (Object list : listsInList2) {
-                                    if (areEqual(list, obj)) {
-                                        contains = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!contains) {
-                                    return false;
-                                }
-                            } else if (obj instanceof Map) {
-                                List mapsInList2 = getMaps(list2);
-
-                                if (mapsInList2.isEmpty()) {
-                                    return false;
-                                }
-
-                                boolean contains = false;
-                                for (Object map : mapsInList2) {
-                                    if (areEqual(map, obj)) {
-                                        contains = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!contains) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
+                    for (Object i1 : list1) {
+                        boolean contains = false;
+                        for (Object i2 : list2) {
+                            if (areEqual(i1, i2)) {
+                                contains = true;
+                                break;
                             }
+                        }
+
+                        if (!contains) {
+                            return false;
                         }
                     }
                     return true;
@@ -140,42 +96,12 @@ public class ObjectComparator {
             return b1.equals(b2);
         }
 
-        else if (obj1.getClass() != obj2.getClass()) {
+        else if ((obj1.getClass() != obj2.getClass()) && !(obj1 instanceof CharSequence && obj2 instanceof CharSequence)) {
             return false;
         }
 
         String strObj1 = String.valueOf(obj1);
         String strObj2 = String.valueOf(obj2);
         return strObj1.equals(strObj2);
-    }
-
-    private static List getLists(List list) {
-        List result = new ArrayList<>();
-        for (Object obj : list) {
-            if (obj instanceof List) {
-                result.add(obj);
-            }
-        }
-        return result;
-    }
-
-    private static List getMaps(List list) {
-        List result = new ArrayList();
-        for (Object obj : list) {
-            if (obj instanceof Map) {
-                result.add(obj);
-            }
-        }
-        return result;
-    }
-
-    private static List getNums(List list) {
-        List result = new ArrayList();
-        for (Object obj : list) {
-            if (obj instanceof Number) {
-                result.add(obj);
-            }
-        }
-        return result;
     }
 }
