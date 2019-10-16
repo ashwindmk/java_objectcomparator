@@ -7,11 +7,49 @@ public class ObjectComparator {
             return true;
         }
 
-        else if (obj1 == null || obj2 == null) {
+        if (obj1 == null || obj2 == null) {
             return false;
         }
 
-        else if (obj1 instanceof Map || obj2 instanceof Map) {
+        if (obj1 instanceof Object[] && obj2 instanceof Object[]) {
+            return Arrays.deepEquals((Object[]) obj1, (Object[]) obj2);
+        }
+
+        if (obj1.getClass().isArray() && obj2.getClass().isArray()) {
+            if (obj1 instanceof boolean[] && obj2 instanceof boolean[]) {
+                return Arrays.equals((boolean[]) obj1, (boolean[]) obj2);
+            }
+
+            if (obj1 instanceof int[] && obj2 instanceof int[]) {
+                return Arrays.equals((int[]) obj1, (int[]) obj2);
+            }
+
+            if (obj1 instanceof long[] && obj2 instanceof long[]) {
+                return Arrays.equals((long[]) obj1, (long[]) obj2);
+            }
+
+            if (obj1 instanceof byte[] && obj2 instanceof byte[]) {
+                return Arrays.equals((byte[]) obj1, (byte[]) obj2);
+            }
+
+            if (obj1 instanceof short[] && obj2 instanceof short[]) {
+                return Arrays.equals((short[]) obj1, (short[]) obj2);
+            }
+
+            if (obj1 instanceof double[] && obj2 instanceof double[]) {
+                return Arrays.equals((double[]) obj1, (double[]) obj2);
+            }
+
+            if (obj1 instanceof float[] && obj2 instanceof float[]) {
+                return Arrays.equals((float[]) obj1, (float[]) obj2);
+            }
+
+            if (obj1 instanceof char[] && obj2 instanceof char[]) {
+                return Arrays.equals((char[]) obj1, (char[]) obj2);
+            }
+        }
+
+        if (obj1 instanceof Map || obj2 instanceof Map) {
             if (obj1 instanceof Map && obj2 instanceof Map) {
                 Map map1 = (Map) obj1;
                 Map map2 = (Map) obj2;
@@ -39,7 +77,7 @@ public class ObjectComparator {
             }
         }
 
-        else if (obj1 instanceof List || obj2 instanceof List) {
+        if (obj1 instanceof List || obj2 instanceof List) {
             if (obj1 instanceof List && obj2 instanceof List) {
                 List list1 = (List) obj1;
                 List list2 = (List) obj2;
@@ -69,7 +107,7 @@ public class ObjectComparator {
             }
         }
 
-        else if (obj1 instanceof Number && obj2 instanceof Number) {
+        if (obj1 instanceof Number && obj2 instanceof Number) {
             Number n1 = (Number) obj1;
             Number n2 = (Number) obj2;
 
@@ -96,12 +134,12 @@ public class ObjectComparator {
             return b1.equals(b2);
         }
 
-        else if ((obj1.getClass() != obj2.getClass()) && !(obj1 instanceof CharSequence && obj2 instanceof CharSequence)) {
-            return false;
+        if (obj1 instanceof CharSequence && obj2 instanceof CharSequence) {
+            String strObj1 = String.valueOf(obj1);
+            String strObj2 = String.valueOf(obj2);
+            return strObj1.equals(strObj2);
         }
 
-        String strObj1 = String.valueOf(obj1);
-        String strObj2 = String.valueOf(obj2);
-        return strObj1.equals(strObj2);
+        return false;
     }
 }
