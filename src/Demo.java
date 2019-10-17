@@ -6,6 +6,8 @@ import java.util.*;
 
 public class Demo {
     public static void main(String[] args) {
+        classTest();
+
         nullTest();
 
         booleanTest();
@@ -31,24 +33,51 @@ public class Demo {
         listInMapTest();
     }
 
+    private static void classTest() {
+        System.out.println("Classes:");
+        Map<String, Object> o1 = new HashMap<>();
+        String o2 = "{}";
+        System.out.println("  Classes String and Map are equal: " + ObjectComparator.areEqual(o1, o2));
+
+        Object o3 = 125;
+        Object o4 = "125";
+        System.out.println("  Classes Number and String are equal: " + ObjectComparator.areEqual(o3, o4));
+        System.out.println();
+    }
+
     private static void nullTest() {
+        System.out.println("Nulls:");
         Object o1 = null;
         Object o2 = null;
-        System.out.println("Nulls are equal: " + ObjectComparator.areEqual(o1, o2));
+        System.out.println("  Nulls are equal: " + ObjectComparator.areEqual(o1, o2));
+
+        Object o3 = null;
+        Object o4 = 1;
+        System.out.println("  Null and non-null are equal: " + ObjectComparator.areEqual(o3, o4));
         System.out.println();
     }
 
     private static void booleanTest() {
+        System.out.println("Booleans:");
         Object b1 = true;
         boolean b2 = Boolean.TRUE;
-        System.out.println("Booleans are equal: " + ObjectComparator.areEqual(b1, b2));
+        System.out.println("  (true, true) are equal: " + ObjectComparator.areEqual(b1, b2));
+
+        boolean b3 = true;
+        boolean b4 = false;
+        System.out.println("  (true, false) are equal: " + ObjectComparator.areEqual(b3, b4));
         System.out.println();
     }
 
     private static void stringTest() {
+        System.out.println("Strings:");
         Object o1 = "test1";
         Object o2 = new String("test1");
-        System.out.println("Strings are equal: " + ObjectComparator.areEqual(o1, o2));
+        System.out.println("  String objects are equal: " + ObjectComparator.areEqual(o1, o2));
+
+        String s1 = "";
+        String s2 = "";
+        System.out.println("  Empty strings are equal: " + ObjectComparator.areEqual(s1, s2));
         System.out.println();
     }
 
@@ -84,10 +113,16 @@ public class Demo {
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
         format1.setTimeZone(TimeZone.getTimeZone("UTC"));
 
+        SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        format2.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Date d01 = new Date();
+        Date d02 = new Date();
         Date d1 = null;
         Date d2 = null;
         Date d3 = null;
         Date d4 = null;
+        Date d5 = null;
         try {
             d1 = format1.parse("2019-10-15T12:30:45.125Z");
         } catch (ParseException e) {
@@ -107,16 +142,29 @@ public class Demo {
         }
 
         try {
-            SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            format2.setTimeZone(TimeZone.getTimeZone("UTC"));
             d4 = format2.parse("2019-10-15");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        System.out.println("  dates d1 & d2 are equal: " + ObjectComparator.areEqual(d1, d2));
+        try {
+            d5 = format1.parse("2019-10-15T12:30:45.126Z");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        System.out.println("  dates d3 & d4 are equal: " + ObjectComparator.areEqual(d3, d4));
+        System.out.println("  current dates: " + format1.format(d01) + ", " + format1.format(d02) + "\n" +
+                "    d1: " + format1.format(d1) + ", d2: " + format1.format(d2) + "\n" +
+                "    d3: " + format1.format(d3) + ", d4: " + format1.format(d4) + "\n" +
+                "    d5: " + format1.format(d5));
+
+        System.out.println("  Current dates are equal: " + ObjectComparator.areEqual(d01, d02));
+
+        System.out.println("  Dates d1 & d2 are equal: " + ObjectComparator.areEqual(d1, d2));
+
+        System.out.println("  Dates d3 & d4 are equal: " + ObjectComparator.areEqual(d3, d4));
+
+        System.out.println("  Dates d1 & d5 are equal: " + ObjectComparator.areEqual(d1, d5));
 
         System.out.println();
     }
@@ -140,10 +188,20 @@ public class Demo {
         Object[] o2 = {null, "a", 1, 12.25, true};
         System.out.println("  Object[] are equal: " + ObjectComparator.areEqual(o1, o2));
 
+        Object[] o3 = {null, "a"};
+        Object[] o4 = {null, "b"};
+        System.out.println("  Different object[] are equal: " + ObjectComparator.areEqual(o3, o4));
+
         System.out.println();
     }
 
     private static void mapTest() {
+        System.out.println("Maps:");
+
+        Map map01 = new HashMap();
+        Map map02 = new LinkedHashMap();
+        System.out.println("  Empty maps are equal: " + ObjectComparator.areEqual(map01, map02));
+
         Map map1 = new HashMap();
         map1.put("k1", "v1");
         map1.put("k2", 2);
@@ -154,7 +212,7 @@ public class Demo {
         map2.put("k1", "v1");
         map2.put("k2", 2);
 
-        System.out.println("Maps are equal: " + ObjectComparator.areEqual(map1, map2));
+        System.out.println("  Maps are equal: " + ObjectComparator.areEqual(map1, map2));
 
         System.out.println();
     }

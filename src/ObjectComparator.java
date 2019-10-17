@@ -3,7 +3,7 @@ import java.util.*;
 
 public class ObjectComparator {
     public static boolean areEqual(Object obj1, Object obj2) {
-        if (Objects.equals(obj1, obj2)) {
+        if (obj1 == obj2) {
             return true;
         }
 
@@ -11,11 +11,11 @@ public class ObjectComparator {
             return false;
         }
 
-        if (obj1 instanceof Object[] && obj2 instanceof Object[]) {
-            return Arrays.deepEquals((Object[]) obj1, (Object[]) obj2);
-        }
-
         if (obj1.getClass().isArray() && obj2.getClass().isArray()) {
+            if (obj1 instanceof Object[] && obj2 instanceof Object[]) {
+                return Arrays.deepEquals((Object[]) obj1, (Object[]) obj2);
+            }
+
             if (obj1 instanceof boolean[] && obj2 instanceof boolean[]) {
                 return Arrays.equals((boolean[]) obj1, (boolean[]) obj2);
             }
@@ -49,59 +49,48 @@ public class ObjectComparator {
             }
         }
 
-        if (obj1 instanceof Map || obj2 instanceof Map) {
-            if (obj1 instanceof Map && obj2 instanceof Map) {
-                Map map1 = (Map) obj1;
-                Map map2 = (Map) obj2;
-                int size1 = map1.size();
-                int size2 = map2.size();
-                if (size1 == size2) {
-                    Set set1 = map1.keySet();
-                    Iterator keys1 = set1.iterator();
-                    while (keys1.hasNext()) {
-                        Object key = keys1.next();
-                        if (!map2.containsKey(key)) {
-                            return false;
-                        }
-
-                        if (!areEqual(map1.get(key), map2.get(key))) {
-                            return false;
-                        }
+        if (obj1 instanceof Map && obj2 instanceof Map) {
+            Map map1 = (Map) obj1;
+            Map map2 = (Map) obj2;
+            int size1 = map1.size();
+            int size2 = map2.size();
+            if (size1 == size2) {
+                for (Object key : map1.keySet()) {
+                    if (!map2.containsKey(key)) {
+                        return false;
                     }
-                    return true;
-                } else {
-                    return false;
+
+                    if (!areEqual(map1.get(key), map2.get(key))) {
+                        return false;
+                    }
                 }
+                return true;
             } else {
                 return false;
             }
         }
 
-        if (obj1 instanceof List || obj2 instanceof List) {
-            if (obj1 instanceof List && obj2 instanceof List) {
-                List list1 = (List) obj1;
-                List list2 = (List) obj2;
+        if (obj1 instanceof List && obj2 instanceof List) {
+            List list1 = (List) obj1;
+            List list2 = (List) obj2;
 
-                int size1 = list1.size();
-                int size2 = list2.size();
-                if (size1 == size2) {
-                    for (Object i1 : list1) {
-                        boolean contains = false;
-                        for (Object i2 : list2) {
-                            if (areEqual(i1, i2)) {
-                                contains = true;
-                                break;
-                            }
-                        }
-
-                        if (!contains) {
-                            return false;
+            int size1 = list1.size();
+            int size2 = list2.size();
+            if (size1 == size2) {
+                for (Object i1 : list1) {
+                    boolean contains = false;
+                    for (Object i2 : list2) {
+                        if (areEqual(i1, i2)) {
+                            contains = true;
+                            break;
                         }
                     }
-                    return true;
-                } else {
-                    return false;
+
+                    if (!contains) {
+                        return false;
+                    }
                 }
+                return true;
             } else {
                 return false;
             }
@@ -140,6 +129,6 @@ public class ObjectComparator {
             return strObj1.equals(strObj2);
         }
 
-        return false;
+        return obj1.equals(obj2);
     }
 }
