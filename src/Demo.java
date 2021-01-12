@@ -92,6 +92,7 @@ public class Demo {
         System.out.println("Numbers:");
 
         double d1 = 12.00000;
+        double d2 = 12d;
         BigDecimal bd1 = new BigDecimal("12.00");
         System.out.println("  (double, double) are equal: " + ObjectComparator.areEqual(d1, bd1));
         System.out.println("  (double, bigdecimal) are equal: " + ObjectComparator.areEqual(d1, bd1));
@@ -104,6 +105,26 @@ public class Demo {
         Number n2 = 12.125f;
         System.out.println("  (double, float) are equal: " + ObjectComparator.areEqual(n1, n2));
 
+        // Test
+        Object f1 = 12f;
+        if (f1 instanceof Float) {
+            System.out.println("  ---> found float");
+        } else {
+            System.out.println("  ---> not found float");
+        }
+
+        /*Number fn = (Number) f1;
+        Number dn = (Number) d2;
+        System.out.println("  ---> f1 v d1: " + ObjectComparator.areEqual(fn, dn));
+
+        String sn1 = String.valueOf(d1);
+        String sn2 = String.valueOf(d2);
+        System.out.println("  ---> sd1: " + sn1 + ", sd2: " + sn2 + ", d1: " + d1);
+        System.out.println("  ---> bd1: " + bd1);
+
+        BigDecimal mbd1 = new BigDecimal("12");
+        BigDecimal mbd2 = new BigDecimal("12.0");
+        System.out.println("  ---> bd1: " + mbd1 + ", bd2: " + mbd2 + ", eq: " + mbd1.equals(mbd2));*/
         System.out.println();
     }
 
